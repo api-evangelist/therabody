@@ -1,0 +1,235 @@
+generated: '2026-08-05'
+method: derived
+source:
+- mcp/therabody-ucp-mcp-tools.json
+- mcp/therabody-customer-account-mcp-tools.json
+- graphql/therabody-storefront.graphql
+note: Therabody publishes no OpenAPI, so this crosswalk binds MCP tools to Storefront GraphQL fields instead
+  of REST operationIds. Every GraphQL field named below was verified to exist verbatim in the introspected
+  SDL. Confidence reflects how cleanly the UCP tool boundary matches the GraphQL mutation boundary — UCP
+  models cart and checkout as coarse objects while Storefront splits them across many fine-grained mutations,
+  so several tools legitimately fan out.
+surfaces:
+  openapi:
+    present: false
+    note: /openapi.json and /swagger.json returned 404 on every probed host
+  graphql:
+    endpoint: https://www.therabody.com/api/2026-04/graphql.json
+    introspection: open (anonymous, HTTP 200)
+    file: graphql/therabody-storefront.graphql
+    query_fields: 35
+    mutations: 41
+  mcp:
+  - name: therabody-ucp-commerce
+    url: https://www.therabody.com/api/ucp/mcp
+    tools_list: open (anonymous, HTTP 200)
+    tools: 13
+  - name: therabody-customer-account
+    url: https://account.therabody.com/customer/api/mcp
+    tools_list: open (anonymous, HTTP 200)
+    execution: OAuth bearer required
+    tools: 4
+crosswalk:
+- tool: search_catalog
+  category: catalog
+  graphql:
+  - search
+  - predictiveSearch
+  - products
+  binding: graphql
+  confidence: high
+  note: UCP catalog search maps onto the Storefront search/predictiveSearch/products connections; the
+    MCP tool applies its own relevance layer over the same product corpus.
+- tool: lookup_catalog
+  category: catalog
+  graphql:
+  - nodes
+  - products
+  - productByHandle
+  binding: graphql
+  confidence: medium
+  note: Batch identifier resolution; Storefront resolves multiple ids via nodes or filtered products rather
+    than a dedicated bulk-lookup field.
+- tool: get_product
+  category: catalog
+  graphql:
+  - product
+  - productByHandle
+  binding: graphql
+  confidence: high
+  note: Single product detail by identifier or handle.
+- tool: create_cart
+  category: cart
+  graphql:
+  - cartCreate
+  binding: graphql
+  confidence: high
+- tool: get_cart
+  category: cart
+  graphql:
+  - cart
+  binding: graphql
+  confidence: high
+- tool: update_cart
+  category: cart
+  graphql:
+  - cartLinesAdd
+  - cartLinesUpdate
+  - cartLinesRemove
+  - cartAttributesUpdate
+  - cartNoteUpdate
+  - cartDiscountCodesUpdate
+  - cartGiftCardCodesAdd
+  - cartBuyerIdentityUpdate
+  - cartDeliveryAddressesUpdate
+  - cartSelectedDeliveryOptionsUpdate
+  binding: graphql
+  confidence: medium
+  note: One MCP tool fans out across ten Storefront cart mutations; the backing mutation depends on which
+    sub-object the call mutates.
+- tool: cancel_cart
+  category: cart
+  graphql:
+  - cartRemovePersonalData
+  binding: graphql
+  confidence: low
+  note: No direct cart-delete mutation exists on Storefront; cancellation is approximated by personal-data
+    removal and server-side expiry.
+- tool: create_checkout
+  category: checkout
+  graphql:
+  - cartCreate
+  - cartPrepareForCompletion
+  binding: graphql
+  confidence: medium
+  note: UCP models checkout as a first-class object; Storefront models it as a cart advanced toward completion.
+- tool: get_checkout
+  category: checkout
+  graphql:
+  - cart
+  - cartCompletionAttempt
+  binding: graphql
+  confidence: medium
+- tool: update_checkout
+  category: checkout
+  graphql:
+  - cartBillingAddressUpdate
+  - cartPaymentUpdate
+  - cartDeliveryAddressesUpdate
+  - cartSelectedDeliveryOptionsUpdate
+  - cartPrepareForCompletion
+  binding: graphql
+  confidence: medium
+  note: Fans out across the payment/address/delivery mutations that Storefront exposes separately.
+- tool: complete_checkout
+  category: checkout
+  graphql:
+  - cartSubmitForCompletion
+  - cartCompletionAttempt
+  binding: graphql
+  confidence: high
+  note: Requires meta.idempotency-key. Gated on explicit buyer approval per the published agent instructions.
+- tool: cancel_checkout
+  category: checkout
+  graphql:
+  - cartRemovePersonalData
+  binding: graphql
+  confidence: low
+  note: No dedicated Storefront checkout-cancel mutation; mapped by semantics only.
+- tool: get_order
+  category: order
+  graphql:
+  - node
+  binding: graphql
+  confidence: low
+  note: Storefront exposes Order only as a Node reachable with a customer access token; the UCP tool resolves
+    order state server-side.
+mcp_only:
+- tool: get_most_recent_order_status
+  reason: Customer Account MCP tool; backed by the Customer Account API, which is a separate authenticated
+    surface not present in the Storefront schema.
+  server: therabody-customer-account
+- tool: get_order_status
+  reason: Customer Account MCP tool; backed by the Customer Account API, which is a separate authenticated
+    surface not present in the Storefront schema.
+  server: therabody-customer-account
+- tool: get_store_credit_balances
+  reason: Customer Account MCP tool; backed by the Customer Account API, which is a separate authenticated
+    surface not present in the Storefront schema.
+  server: therabody-customer-account
+- tool: request_return
+  reason: Customer Account MCP tool; backed by the Customer Account API, which is a separate authenticated
+    surface not present in the Storefront schema.
+  server: therabody-customer-account
+graphql_only:
+- capability: content
+  fields:
+  - article
+  - articles
+  - blog
+  - blogByHandle
+  - blogs
+  - menu
+  - page
+  - pageByHandle
+  - pages
+  - sitemap
+  - urlRedirects
+- capability: merchandising
+  fields:
+  - collection
+  - collectionByHandle
+  - collections
+  - productRecommendations
+  - productTags
+  - productTypes
+- capability: customer-auth
+  fields:
+  - customer
+  - customerAccessTokenCreate
+  - customerAccessTokenCreateWithMultipass
+  - customerAccessTokenDelete
+  - customerAccessTokenRenew
+  - customerActivate
+  - customerActivateByUrl
+  - customerAddressCreate
+  - customerAddressDelete
+  - customerAddressUpdate
+  - customerCreate
+  - customerDefaultAddressUpdate
+  - customerRecover
+  - customerReset
+  - customerResetByUrl
+  - customerUpdate
+- capability: shop-config
+  fields:
+  - localization
+  - locations
+  - metaobject
+  - metaobjects
+  - paymentSettings
+  - publicApiVersions
+  - shop
+  - shopPayInstallmentsPricing
+- capability: shop-pay
+  fields:
+  - shopPayPaymentRequestSessionCreate
+  - shopPayPaymentRequestSessionSubmit
+- capability: cart-advanced
+  fields:
+  - cartClone
+  - cartDeliveryAddressesAdd
+  - cartDeliveryAddressesRemove
+  - cartDeliveryAddressesReplace
+  - cartGiftCardCodesRemove
+  - cartGiftCardCodesUpdate
+  - cartMetafieldDelete
+  - cartMetafieldsSet
+coverage:
+  mcp_tools_total: 17
+  ucp_tools: 13
+  customer_account_tools: 4
+  ucp_tools_bound_to_graphql: 13
+  graphql_fields_total: 76
+  graphql_fields_bound: 25
+  graphql_only_fields: 51

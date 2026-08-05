@@ -1,18 +1,95 @@
 aid: therabody
 name: Therabody
-description: 'Therabody is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Therabody is a Los Angeles-based wellness technology company founded in
+  2016 by Dr. Jason Wersland, best known for inventing the Theragun percussive therapy
+  device. Its product ecosystem spans percussive therapy (Theragun), pneumatic compression
+  (RecoveryAir), electrical stimulation (PowerDot), vibration therapy (Wave) and the
+  Therabody companion app. Therabody publishes no traditional developer program, but
+  its direct-to-consumer storefront at therabody.com runs on Shopify and exposes a
+  substantial machine-readable commerce surface: an open Storefront GraphQL API, a
+  Universal Commerce Protocol (UCP) MCP server for agent-driven catalog search, cart
+  and checkout, a customer-account MCP server for order status and returns, OAuth 2.0
+  / OpenID Connect discovery, and published agent instructions at /llms.txt and /agents.md.'
+image: https://www.therabody.com/cdn/shop/files/theragun-social-media.jpg?v=1742212493
 url: https://raw.githubusercontent.com/api-evangelist/therabody/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-05'
 modified: '2026-08-05'
+x-enrichment:
+  date: '2026-08-05'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v1
 tags:
 - Company
-apis: []
+- Wellness
+- Health
+- Consumer Products
+- E-Commerce
+- Retail
+- Shopify
+- Agentic Commerce
+- Model Context Protocol
+- GraphQL
+- Universal Commerce Protocol
+apis:
+- aid: therabody-ucp-commerce-mcp
+  name: Therabody UCP Commerce MCP
+  description: 'Therabody''s agent-facing commerce server, implementing the Universal
+    Commerce Protocol (UCP) shopping service over MCP on the Therabody storefront host.
+    Anonymous tools/list returns 13 tools with full JSON Schema input contracts covering
+    catalog search and lookup, product detail, cart create/get/update/cancel, and the
+    full checkout lifecycle (create, get, update, complete, cancel). Checkout completion
+    requires explicit buyer approval per the published agent instructions.'
+  humanURL: https://www.therabody.com/agents.md
+  baseURL: https://www.therabody.com/api/ucp/mcp
+  tags:
+  - MCP
+  - Agentic Commerce
+  - UCP
+  - Checkout
+  - Catalog
+  properties:
+  - type: MCPServer
+    url: mcp/therabody-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/therabody-tool-crosswalk.yml
+- aid: therabody-storefront-graphql
+  name: Therabody Storefront GraphQL API
+  description: 'The Shopify Storefront GraphQL API served from the Therabody US storefront
+    host. Anonymous introspection is open and returns 416 types across 35 query root
+    fields covering products, collections, carts, search, blogs, pages, menus, metaobjects,
+    localization and payment settings. The full SDL is captured in graphql/ from a
+    live introspection query.'
+  humanURL: https://shopify.dev/docs/api/storefront
+  baseURL: https://www.therabody.com/api/2026-04/graphql.json
+  tags:
+  - GraphQL
+  - Storefront
+  - Catalog
+  - Cart
+  properties:
+  - type: GraphQL
+    url: graphql/therabody-storefront.graphql
+- aid: therabody-customer-account-mcp
+  name: Therabody Customer Account MCP
+  description: 'Therabody''s customer-account MCP server on account.therabody.com,
+    exposing four post-purchase tools: most-recent order status, order status by order
+    number, store credit balances, and return requests. Tool discovery is anonymous;
+    tool execution requires a customer OAuth bearer token carrying the customer-account-mcp-api
+    scope.'
+  humanURL: https://account.therabody.com/
+  baseURL: https://account.therabody.com/customer/api/mcp
+  tags:
+  - MCP
+  - Customer Account
+  - Orders
+  - Returns
+  properties:
+  - type: MCPServer
+    url: mcp/therabody-mcp.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +97,42 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://forgeglobal.com/therabody_stock/
+  url: https://www.therabody.com/
+- type: Blog
+  url: https://www.therabody.com/blogs/news
+- type: Support
+  url: https://www.therabody.com/pages/support
+- type: TermsOfService
+  url: https://www.therabody.com/policies/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.therabody.com/policies/privacy-policy
+- type: SignUp
+  url: https://account.therabody.com/
+- type: LLMsTxt
+  url: llms/therabody-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: WellKnown
+  url: well-known/therabody-well-known.yml
+- type: Authentication
+  url: authentication/therabody-authentication.yml
+- type: OAuthScopes
+  url: scopes/therabody-scopes.yml
+- type: Conventions
+  url: conventions/therabody-conventions.yml
+- type: Idempotency
+  url: conventions/therabody-conventions.yml
+- type: Conformance
+  url: conformance/therabody-conformance.yml
+- type: Lifecycle
+  url: lifecycle/therabody-lifecycle.yml
+- type: DomainSecurity
+  url: security/therabody-domain-security.yml
+- type: ErrorCatalog
+  url: errors/therabody-problem-types.yml
+- type: DeclineCodes
+  url: errors/therabody-decline-codes.yml
+- type: MCPServer
+  url: mcp/therabody-mcp.yml
+- type: GraphQL
+  url: graphql/therabody-storefront.graphql

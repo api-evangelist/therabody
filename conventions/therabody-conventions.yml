@@ -1,0 +1,98 @@
+generated: '2026-08-05'
+method: derived
+source:
+- mcp/therabody-ucp-mcp-tools.json
+- graphql/therabody-storefront.graphql
+- well-known/therabody-ucp.json
+- skills/therabody-agents.md
+authentication:
+  style: OAuth 2.0 / OIDC bearer for customer-scoped surfaces; anonymous for catalog
+  detail: See authentication/therabody-authentication.yml. Storefront GraphQL answered anonymously during
+    probing; customer-account MCP execution requires a bearer token with customer-account-mcp-api:full.
+idempotency:
+  supported: true
+  mcp:
+    field: meta.idempotency-key
+    required: true
+    tools:
+    - complete_checkout
+    description: An idempotency key for completing the checkout. Declared required in the complete_checkout
+      inputSchema.
+  graphql:
+    argument: idempotencyKey
+    required: true
+    mutations:
+    - shopPayPaymentRequestSessionSubmit
+    error_code: IDEMPOTENCY_KEY_ALREADY_USED
+  scope: per checkout completion attempt
+  retention: not published
+  evidence: 'mcp/therabody-ucp-mcp-tools.json (complete_checkout.inputSchema.meta.required includes idempotency-key);
+    graphql SDL Mutation.shopPayPaymentRequestSessionSubmit(idempotencyKey: String!)'
+agent_identity:
+  field: meta.ucp-agent.profile
+  required: true
+  applies_to: every UCP MCP tool
+  description: A URI identifying the calling agent, used for UCP agent-profile discovery. Not a credential.
+pagination:
+  style: graphql-cursor-connections
+  params:
+  - first
+  - last
+  - after
+  - before
+  response_fields:
+  - edges
+  - node
+  - cursor
+  - pageInfo.hasNextPage
+  - pageInfo.hasPreviousPage
+  - pageInfo.startCursor
+  - pageInfo.endCursor
+  source: graphql/therabody-storefront.graphql
+rate_limiting:
+  style: graphql-query-cost
+  signal: extensions.cost in every GraphQL response
+  observed_fields:
+  - requestedQueryCost
+  note: Shopify Storefront API is metered by calculated query cost rather than request count; the cost
+    object is returned inline on every response rather than in headers.
+versioning:
+  scheme: date-based path segment
+  pattern: /api/{YYYY-MM}/graphql.json
+  current: 2026-07
+  probed: 2026-04
+  see: lifecycle/therabody-lifecycle.yml
+error_envelope:
+  style: graphql-user-errors
+  shape: mutation payload contains a typed userErrors[] with {code, field, message}; transport failures
+    use top-level errors[]
+  see: errors/therabody-problem-types.yml
+identifiers:
+  style: Shopify Global ID (GID)
+  pattern: gid://shopify/{Type}/{id}
+  examples_in_schema:
+  - gid://shopify/Checkout/abc123
+  note: MCP tool inputSchemas document the GID format directly in their id descriptions.
+metadata:
+  mechanism: metafields and metaobjects
+  graphql_types:
+  - Metafield
+  - Metaobject
+  - HasMetafields
+  mutations:
+  - cartMetafieldsSet
+  - cartMetafieldDelete
+buyer_approval:
+  required_for:
+  - complete_checkout
+  - checkout
+  - payment
+  - order placement
+  policy_source: https://www.therabody.com/robots.txt and https://www.therabody.com/agents.md
+  statement: Checkouts are for humans. Agents must not complete checkout, payment or order placement automatically
+    without an explicit, contemporaneous human approval step.
+cross_links:
+  errors: errors/therabody-problem-types.yml
+  authentication: authentication/therabody-authentication.yml
+  lifecycle: lifecycle/therabody-lifecycle.yml
+  scopes: scopes/therabody-scopes.yml

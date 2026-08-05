@@ -1,0 +1,43 @@
+generated: '2026-08-05'
+method: searched
+source: GraphQL publicApiVersions query against https://www.therabody.com/api/2026-04/graphql.json
+versioning:
+  scheme: date-based quarterly path segment
+  pattern: /api/{YYYY-MM}/graphql.json
+  current: 2026-07
+  current_display: 2026-07 (Latest)
+  supported:
+  - 2025-10
+  - 2026-01
+  - 2026-04
+  - 2026-07
+  unsupported:
+  - handle: 2026-10
+    note: Release candidate
+  - handle: unstable
+    note: Unstable channel
+  probed_version: 2026-04
+ucp_versioning:
+  current: '2026-04-08'
+  supported:
+  - '2026-04-08'
+  - '2026-01-23'
+  source: well-known/therabody-ucp.json
+deprecation:
+  policy_url: null
+  sunset_header: null
+  mechanism: GraphQL @deprecated directive on schema fields plus rolling support of the four most recent
+    quarterly versions
+  note: No Therabody-published deprecation policy was found. The deprecation contract is inherited from
+    the Shopify Storefront API version train and is documented by Shopify, not Therabody.
+status_page: null
+status_page_note: status.therabody.com resolves and returns HTTP 200, but it redirects to https://statusgator.com/
+  — a third-party status-aggregator marketing page, not a Therabody status page. No StatusPage pointer
+  is emitted.
+sla: null
+x-evidence:
+- url: https://status.therabody.com/
+  http_status: 200
+  final_url: https://statusgator.com/
+  fetched: '2026-08-05'
+  verdict: not a provider status page

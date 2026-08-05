@@ -1,0 +1,78 @@
+generated: '2026-08-05'
+method: searched
+source: https://www.therabody.com/.well-known/openid-configuration
+docs: https://account.therabody.com/
+summary:
+  types:
+  - oauth2
+  - openIdConnect
+  api_key_in: []
+  oauth2_flows:
+  - authorizationCode
+  anonymous_surfaces:
+  - Storefront GraphQL introspection
+  - UCP MCP tools/list
+  - Customer Account MCP tools/list
+  - UCP catalog tools
+schemes:
+- name: ShopifyCustomerAccountOIDC
+  type: openIdConnect
+  openIdConnectUrl: https://www.therabody.com/.well-known/openid-configuration
+  issuer: https://shopify.com/authentication/67140976867
+  authorizationUrl: https://account.therabody.com/authentication/oauth/authorize
+  tokenUrl: https://account.therabody.com/authentication/oauth/token
+  jwks_uri: https://account.therabody.com/authentication/.well-known/jwks.json
+  end_session_endpoint: https://account.therabody.com/authentication/logout
+  grant_types:
+  - authorization_code
+  - refresh_token
+  - urn:ietf:params:oauth:grant-type:jwt-bearer
+  response_types:
+  - code
+  token_endpoint_auth_methods:
+  - client_secret_basic
+  pkce:
+  - S256
+  id_token_signing_alg:
+  - RS256
+  claims:
+  - iss
+  - sub
+  - aud
+  - exp
+  - iat
+  - nonce
+  - sid
+  - email
+  - email_verified
+  scopes:
+  - openid
+  - email
+  - customer-account-api:full
+  - customer-account-mcp-api:full
+  sources:
+  - well-known/therabody-openid-configuration.json
+- name: CustomerAccountBearer
+  type: http
+  scheme: bearer
+  description: Bearer token issued by the customer-account authorization server, presented in the Authorization
+    header.
+  bearer_methods:
+  - header
+  protected_resources:
+  - https://www.therabody.com
+  - https://account.therabody.com
+  sources:
+  - well-known/therabody-oauth-protected-resource.json
+- name: UCPAgentProfile
+  type: other
+  description: Not a credential. Every UCP MCP tool requires a meta.ucp-agent.profile URI identifying
+    the calling agent, used for agent-profile discovery rather than authentication.
+  sources:
+  - mcp/therabody-ucp-mcp-tools.json
+- name: StorefrontAnonymous
+  type: other
+  description: The Storefront GraphQL endpoint served at /api/<version>/graphql.json answered anonymous
+    introspection and queries without a Storefront access token during probing.
+  sources:
+  - graphql/therabody-storefront.graphql

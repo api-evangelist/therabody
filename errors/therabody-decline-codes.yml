@@ -1,0 +1,81 @@
+generated: '2026-08-05'
+method: derived
+source: graphql/therabody-storefront.graphql (CompletionErrorCode, CartErrorCode, SubmissionErrorCode
+  enums)
+note: Therabody is not a payments provider, but its agent-facing checkout surface terminates real card
+  authorizations, so it returns a decline vocabulary an agent must handle. These codes come from the live
+  introspected Storefront schema. Codes are surfaced to the calling agent; Shopify masks the issuer-side
+  reason, so an agent cannot distinguish a soft from a hard decline beyond these values.
+envelope_field: CompletionError.code (on cartCompletionAttempt / complete_checkout failure)
+retryable:
+- PAYMENT_TRANSIENT_ERROR
+buyer_action_required:
+- PAYMENT_CARD_DECLINED
+- PAYMENT_INSUFFICIENT_FUNDS
+- PAYMENT_CALL_ISSUER
+- PAYMENT_INVALID_CREDIT_CARD
+- PAYMENT_INVALID_BILLING_ADDRESS
+decline_codes:
+- code: PAYMENT_ERROR
+  meaning: Generic payment failure; the payment could not be processed.
+  action: correct the request and resubmit
+- code: PAYMENT_TRANSIENT_ERROR
+  meaning: Temporary payment processing failure; safe to retry with the same idempotency key.
+  action: retry with same idempotency-key
+- code: PAYMENT_AMOUNT_TOO_SMALL
+  meaning: The payment amount is below the minimum the gateway accepts.
+  action: correct the request and resubmit
+- code: PAYMENT_GATEWAY_NOT_ENABLED_ERROR
+  meaning: The requested payment gateway is not enabled on this shop.
+  action: correct the request and resubmit
+- code: PAYMENT_INSUFFICIENT_FUNDS
+  meaning: The buyer has insufficient funds. Buyer must choose another instrument.
+  action: prompt buyer for a different payment instrument
+- code: PAYMENT_INVALID_PAYMENT_METHOD
+  meaning: The supplied payment method is not valid for this checkout.
+  action: correct the request and resubmit
+- code: PAYMENT_INVALID_CURRENCY
+  meaning: The payment currency does not match the checkout currency.
+  action: correct the request and resubmit
+- code: PAYMENT_INVALID_CREDIT_CARD
+  meaning: The card details supplied are invalid.
+  action: prompt buyer for a different payment instrument
+- code: PAYMENT_INVALID_BILLING_ADDRESS
+  meaning: The billing address supplied failed validation or AVS.
+  action: correct the request and resubmit
+- code: PAYMENT_CARD_DECLINED
+  meaning: The issuer declined the card. Buyer must use a different payment instrument.
+  action: prompt buyer for a different payment instrument
+- code: PAYMENT_CALL_ISSUER
+  meaning: The issuer requires the cardholder to contact them before the charge will clear.
+  action: prompt buyer for a different payment instrument
+card_validation_codes:
+  description: Pre-authorization card validation failures raised on cart and submission.
+  cart:
+  - PAYMENTS_CREDIT_CARD_BASE_EXPIRED
+  - PAYMENTS_CREDIT_CARD_BASE_GATEWAY_NOT_SUPPORTED
+  - PAYMENTS_CREDIT_CARD_GENERIC
+  - PAYMENTS_CREDIT_CARD_MONTH_INCLUSION
+  - PAYMENTS_CREDIT_CARD_NUMBER_INVALID
+  - PAYMENTS_CREDIT_CARD_NUMBER_INVALID_FORMAT
+  - PAYMENTS_CREDIT_CARD_VERIFICATION_VALUE_BLANK
+  - PAYMENTS_CREDIT_CARD_VERIFICATION_VALUE_INVALID_FOR_CARD_TYPE
+  - PAYMENTS_CREDIT_CARD_YEAR_EXPIRED
+  - PAYMENTS_CREDIT_CARD_YEAR_INVALID_EXPIRY_YEAR
+  submission:
+  - PAYMENTS_CREDIT_CARD_BASE_EXPIRED
+  - PAYMENTS_CREDIT_CARD_BASE_GATEWAY_NOT_SUPPORTED
+  - PAYMENTS_CREDIT_CARD_BASE_INVALID_START_DATE_OR_ISSUE_NUMBER_FOR_DEBIT
+  - PAYMENTS_CREDIT_CARD_BRAND_NOT_SUPPORTED
+  - PAYMENTS_CREDIT_CARD_FIRST_NAME_BLANK
+  - PAYMENTS_CREDIT_CARD_GENERIC
+  - PAYMENTS_CREDIT_CARD_LAST_NAME_BLANK
+  - PAYMENTS_CREDIT_CARD_MONTH_INCLUSION
+  - PAYMENTS_CREDIT_CARD_NAME_INVALID
+  - PAYMENTS_CREDIT_CARD_NUMBER_INVALID
+  - PAYMENTS_CREDIT_CARD_NUMBER_INVALID_FORMAT
+  - PAYMENTS_CREDIT_CARD_SESSION_ID
+  - PAYMENTS_CREDIT_CARD_VERIFICATION_VALUE_BLANK
+  - PAYMENTS_CREDIT_CARD_VERIFICATION_VALUE_INVALID_FOR_CARD_TYPE
+  - PAYMENTS_CREDIT_CARD_YEAR_EXPIRED
+  - PAYMENTS_CREDIT_CARD_YEAR_INVALID_EXPIRY_YEAR

@@ -1,0 +1,56 @@
+generated: '2026-08-05'
+method: searched
+source: live /.well-known/ probes
+hosts:
+- host: https://www.therabody.com
+  documents:
+  - path: /.well-known/ucp
+    status: 200
+    file: therabody-ucp.json
+    note: UCP discovery document, version 2026-04-08
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: therabody-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: therabody-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: therabody-oauth-protected-resource.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://account.therabody.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+  - path: /.well-known/jwks.json
+    status: 200
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+non_well_known_agent_documents:
+- path: /robots.txt
+  status: 200
+  note: Advertises agents.md, the UCP discovery doc and the UCP/MCP endpoint
+- path: /llms.txt
+  status: 200
+  file: llms/therabody-llms.txt
+- path: /agents.md
+  status: 200
+  file: skills/therabody-agents.md
+note: 404 responses on this host return an HTML storefront error page; a control probe of /zzz-kin-control-9931.txt
+  returned 404 with a zero-length body, confirming these paths are genuine misses and not a single-page-app
+  catch-all.

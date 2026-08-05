@@ -1,0 +1,71 @@
+generated: '2026-08-05'
+method: derived
+source:
+- well-known/therabody-ucp.json
+- well-known/therabody-openid-configuration.json
+- mcp/therabody-mcp.yml
+- graphql/therabody-storefront.graphql
+standards:
+- id: oauth2
+  conforms: true
+  evidence: RFC 8414 authorization-server metadata served at /.well-known/oauth-authorization-server (HTTP
+    200); authorizationCode + refresh_token + jwt-bearer grants
+- id: oidc
+  conforms: true
+  evidence: OpenID Provider configuration at /.well-known/openid-configuration (HTTP 200) with jwks_uri,
+    RS256 id_token signing, standard claims
+- id: oauth2-pkce
+  conforms: true
+  evidence: 'code_challenge_methods_supported: [S256]'
+- id: rfc9728-oauth-protected-resource
+  conforms: true
+  evidence: /.well-known/oauth-protected-resource served on both www and account hosts (HTTP 200)
+- id: mcp
+  conforms: true
+  evidence: Two JSON-RPC 2.0 MCP endpoints answered tools/list with HTTP 200 and valid inputSchema per
+    tool
+- id: ucp
+  conforms: true
+  version: '2026-04-08'
+  evidence: UCP discovery document at /.well-known/ucp declaring dev.ucp.shopping over MCP transport
+  capabilities:
+  - dev.shopify.catalog
+  - dev.ucp.shopping.cart
+  - dev.ucp.shopping.catalog.lookup
+  - dev.ucp.shopping.catalog.search
+  - dev.ucp.shopping.checkout
+  - dev.ucp.shopping.discount
+  - dev.ucp.shopping.fulfillment
+  - dev.ucp.shopping.order
+- id: graphql
+  conforms: true
+  evidence: Storefront GraphQL endpoint with open introspection; 416 types, 35 query root fields, 41 mutations
+- id: json-schema-2020-12
+  conforms: true
+  evidence: UCP MCP tool inputSchemas declare $schema https://json-schema.org/draft/2020-12/schema
+- id: llmstxt
+  conforms: true
+  evidence: https://www.therabody.com/llms.txt returns 200 text/markdown; control path returned 404
+- id: agents-md
+  conforms: true
+  evidence: https://www.therabody.com/agents.md returns 200 text/markdown, advertised in robots.txt
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No OpenAPI and no application/problem+json; errors use the GraphQL userErrors model
+- id: openapi
+  conforms: false
+  evidence: /openapi.json and /swagger.json returned 404 on every probed host
+- id: a2a
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json returned 404 on www.therabody.com
+    and account.therabody.com
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returned 404
+- id: asyncapi
+  conforms: false
+  evidence: No public event, streaming or webhook surface found on Therabody-controlled hosts
+note: Conformance here describes the machine-readable commerce surface Therabody serves from its own hostnames.
+  Much of it is provisioned by the underlying Shopify platform; it is recorded because it is genuinely
+  reachable at Therabody URLs, which is what an agent integrates against. No published certification or
+  compliance program was found for Therabody itself, so no Compliance pointer is emitted.
