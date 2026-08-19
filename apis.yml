@@ -14,7 +14,7 @@ image: https://www.therabody.com/cdn/shop/files/theragun-social-media.jpg?v=1742
 url: https://raw.githubusercontent.com/api-evangelist/therabody/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-05'
 modified: '2026-08-05'
 x-enrichment:
