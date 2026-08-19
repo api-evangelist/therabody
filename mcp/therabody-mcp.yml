@@ -194,3 +194,11 @@ x-evidence:
   method: GET
   http_status: 200
   fetched: '2026-08-05'
+deployment:
+  mode: remote
+  endpoint: https://www.therabody.com/api/ucp/mcp
+  verified: probed
+  probe: live
+  tools: 13
+  checked: '2026-08-12'
+  source: catalog MCP census
