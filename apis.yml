@@ -31,6 +31,18 @@ tags:
 - Retail
 - Shopify
 - Agentic Commerce
+- MCP
+- GraphQL
+- Universal Commerce Protocol
+tags_raw:
+- Company
+- Wellness
+- Health
+- Consumer Products
+- E-Commerce
+- Retail
+- Shopify
+- Agentic Commerce
 - Model Context Protocol
 - GraphQL
 - Universal Commerce Protocol
@@ -83,6 +95,11 @@ apis:
   humanURL: https://account.therabody.com/
   baseURL: https://account.therabody.com/customer/api/mcp
   tags:
+  - MCP
+  - Customer Account
+  - Order
+  - Returns
+  tags_raw:
   - MCP
   - Customer Account
   - Orders
