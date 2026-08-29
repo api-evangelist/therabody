@@ -10,6 +10,17 @@ description: 'Therabody is a Los Angeles-based wellness technology company found
   Universal Commerce Protocol (UCP) MCP server for agent-driven catalog search, cart
   and checkout, a customer-account MCP server for order status and returns, OAuth 2.0
   / OpenID Connect discovery, and published agent instructions at /llms.txt and /agents.md.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.therabody.com/cdn/shop/files/theragun-social-media.jpg?v=1742212493
 url: https://raw.githubusercontent.com/api-evangelist/therabody/refs/heads/main/apis.yml
 x-type: company
