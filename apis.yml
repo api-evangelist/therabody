@@ -1,15 +1,14 @@
 aid: therabody
 name: Therabody
-description: 'Therabody is a Los Angeles-based wellness technology company founded in
-  2016 by Dr. Jason Wersland, best known for inventing the Theragun percussive therapy
-  device. Its product ecosystem spans percussive therapy (Theragun), pneumatic compression
-  (RecoveryAir), electrical stimulation (PowerDot), vibration therapy (Wave) and the
-  Therabody companion app. Therabody publishes no traditional developer program, but
-  its direct-to-consumer storefront at therabody.com runs on Shopify and exposes a
-  substantial machine-readable commerce surface: an open Storefront GraphQL API, a
-  Universal Commerce Protocol (UCP) MCP server for agent-driven catalog search, cart
-  and checkout, a customer-account MCP server for order status and returns, OAuth 2.0
-  / OpenID Connect discovery, and published agent instructions at /llms.txt and /agents.md.'
+description: 'Therabody is a Los Angeles-based wellness technology company founded in 2016 by Dr. Jason
+  Wersland, best known for inventing the Theragun percussive therapy device. Its product ecosystem spans
+  percussive therapy (Theragun), pneumatic compression (RecoveryAir), electrical stimulation (PowerDot),
+  vibration therapy (Wave) and the Therabody companion app. Therabody publishes no traditional developer
+  program, but its direct-to-consumer storefront at therabody.com runs on Shopify and exposes a substantial
+  machine-readable commerce surface: an open Storefront GraphQL API, a Universal Commerce Protocol (UCP)
+  MCP server for agent-driven catalog search, cart and checkout, a customer-account MCP server for order
+  status and returns, OAuth 2.0 / OpenID Connect discovery, and published agent instructions at /llms.txt
+  and /agents.md.'
 deliveryModel:
   model: saas
   open_source: false
@@ -72,14 +71,13 @@ tags_raw:
 - GraphQL
 - Universal Commerce Protocol
 apis:
-- aid: therabody-ucp-commerce-mcp
+- aid: therabody:therabody-ucp-commerce-mcp
   name: Therabody UCP Commerce MCP
-  description: 'Therabody''s agent-facing commerce server, implementing the Universal
-    Commerce Protocol (UCP) shopping service over MCP on the Therabody storefront host.
-    Anonymous tools/list returns 13 tools with full JSON Schema input contracts covering
-    catalog search and lookup, product detail, cart create/get/update/cancel, and the
-    full checkout lifecycle (create, get, update, complete, cancel). Checkout completion
-    requires explicit buyer approval per the published agent instructions.'
+  description: Therabody's agent-facing commerce server, implementing the Universal Commerce Protocol
+    (UCP) shopping service over MCP on the Therabody storefront host. Anonymous tools/list returns 13
+    tools with full JSON Schema input contracts covering catalog search and lookup, product detail, cart
+    create/get/update/cancel, and the full checkout lifecycle (create, get, update, complete, cancel).
+    Checkout completion requires explicit buyer approval per the published agent instructions.
   humanURL: https://www.therabody.com/agents.md
   baseURL: https://www.therabody.com/api/ucp/mcp
   tags:
@@ -93,13 +91,12 @@ apis:
     url: mcp/therabody-mcp.yml
   - type: ToolCrosswalk
     url: mcp/therabody-tool-crosswalk.yml
-- aid: therabody-storefront-graphql
+- aid: therabody:therabody-storefront-graphql
   name: Therabody Storefront GraphQL API
-  description: 'The Shopify Storefront GraphQL API served from the Therabody US storefront
-    host. Anonymous introspection is open and returns 416 types across 35 query root
-    fields covering products, collections, carts, search, blogs, pages, menus, metaobjects,
-    localization and payment settings. The full SDL is captured in graphql/ from a
-    live introspection query.'
+  description: The Shopify Storefront GraphQL API served from the Therabody US storefront host. Anonymous
+    introspection is open and returns 416 types across 35 query root fields covering products, collections,
+    carts, search, blogs, pages, menus, metaobjects, localization and payment settings. The full SDL is
+    captured in graphql/ from a live introspection query.
   humanURL: https://shopify.dev/docs/api/storefront
   baseURL: https://www.therabody.com/api/2026-04/graphql.json
   tags:
@@ -110,12 +107,11 @@ apis:
   properties:
   - type: GraphQL
     url: graphql/therabody-storefront.graphql
-- aid: therabody-customer-account-mcp
+- aid: therabody:therabody-customer-account-mcp
   name: Therabody Customer Account MCP
-  description: 'Therabody''s customer-account MCP server on account.therabody.com,
-    exposing four post-purchase tools: most-recent order status, order status by order
-    number, store credit balances, and return requests. Tool discovery is anonymous;
-    tool execution requires a customer OAuth bearer token carrying the customer-account-mcp-api
+  description: 'Therabody''s customer-account MCP server on account.therabody.com, exposing four post-purchase
+    tools: most-recent order status, order status by order number, store credit balances, and return requests.
+    Tool discovery is anonymous; tool execution requires a customer OAuth bearer token carrying the customer-account-mcp-api
     scope.'
   humanURL: https://account.therabody.com/
   baseURL: https://account.therabody.com/customer/api/mcp
