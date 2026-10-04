@@ -97,6 +97,9 @@ apis:
     url: mcp/therabody-mcp.yml
   - type: ToolCrosswalk
     url: mcp/therabody-tool-crosswalk.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 - aid: therabody:therabody-storefront-graphql
   name: Therabody Storefront GraphQL API
   description: The Shopify Storefront GraphQL API served from the Therabody US storefront host. Anonymous
@@ -113,6 +116,9 @@ apis:
   properties:
   - type: GraphQL
     url: graphql/therabody-storefront.graphql
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-graphql
 - aid: therabody:therabody-customer-account-mcp
   name: Therabody Customer Account MCP
   description: 'Therabody''s customer-account MCP server on account.therabody.com, exposing four post-purchase
@@ -134,6 +140,9 @@ apis:
   properties:
   - type: MCPServer
     url: mcp/therabody-mcp.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: customer-account-mcp
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
